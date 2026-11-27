@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "Axiom · 交互式教材工作台",
+  "short_name": "Axiom",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f9f6",
+  "theme_color": "#193c46",
+  "icons": [
+    {
+      "src": "axiom.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

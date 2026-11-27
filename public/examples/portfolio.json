@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0",
+  "contentVersion": "1.0",
+  "courseId": "investments",
+  "courseTitle": "投资学",
+  "chapterId": "portfolio",
+  "chapterTitle": "双风险资产组合",
+  "number": 10,
+  "subtitle": "Two-Asset Portfolio",
+  "blocks": [
+    {
+      "id": "intro",
+      "type": "paragraph",
+      "content": "组合的预期收益是各资产收益的加权平均。组合风险还取决于它们是否一同上涨或下跌。固定两项资产的特征，观察相关系数如何改变机会集。"
+    },
+    {
+      "id": "frontier",
+      "type": "interactive_model",
+      "model": "two_assets"
+    },
+    {
+      "id": "inputs",
+      "type": "table",
+      "headers": [
+        "资产",
+        "预期收益率",
+        "标准差"
+      ],
+      "rows": [
+        [
+          "A",
+          "12%",
+          "18%"
+        ],
+        [
+          "B",
+          "6%",
+          "8%"
+        ]
+      ]
+    },
+    {
+      "id": "mean",
+      "type": "equation",
+      "latex": "E(R_p)=w E(R_A)+(1-w)E(R_B)"
+    },
+    {
+      "id": "var",
+      "type": "equation",
+      "latex": "\\sigma_p^2=w^2\\sigma_A^2+(1-w)^2\\sigma_B^2+2w(1-w)\\rho\\sigma_A\\sigma_B"
+    },
+    {
+      "id": "steps",
+      "type": "derivation",
+      "steps": [
+        "将两项资产收益分别减去各自均值。",
+        "按权重相加后平方，展开得到两个平方项与一个交叉项。",
+        "取期望后，交叉项中的协方差等于相关系数乘以两个标准差。"
+      ]
+    },
+    {
+      "id": "edge",
+      "type": "callout",
+      "content": "在禁止卖空的条件下，ρ = 1 时组合标准差沿两端点线性变化。ρ = −1 时，选择合适权重可以让波动完全抵消。"
+    },
+    {
+      "id": "exercise",
+      "type": "question",
+      "content": "设 ρ = −1。资产 A 的权重为多少时，组合标准差为零？"
+    },
+    {
+      "id": "solution",
+      "type": "answer",
+      "content": "令 0.18w = 0.08(1 − w)，解得 w = 8/26，约 30.77%。此时两项资产的波动贡献大小相同、方向相反。"
+    },
+    {
+      "id": "notes",
+      "type": "blank_space",
+      "height": 180
+    }
+  ]
+}

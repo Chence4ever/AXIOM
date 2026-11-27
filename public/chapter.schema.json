@@ -1,0 +1,439 @@
+{
+  "$ref": "#/definitions/AxiomChapter",
+  "definitions": {
+    "AxiomChapter": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0"
+        },
+        "contentVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100000
+        },
+        "courseId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,96}$"
+        },
+        "courseTitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100000
+        },
+        "chapterId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,96}$"
+        },
+        "chapterTitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100000
+        },
+        "subtitle": {
+          "type": "string",
+          "default": ""
+        },
+        "number": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "heading"
+                      },
+                      "level": {
+                        "type": "integer",
+                        "minimum": 2,
+                        "maximum": 4,
+                        "default": 2
+                      },
+                      "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "paragraph"
+                      },
+                      "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "markdown"
+                      },
+                      "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "callout"
+                      },
+                      "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "question"
+                      },
+                      "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "answer"
+                      },
+                      "content": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "content"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "equation"
+                      },
+                      "latex": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "latex"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "table"
+                      },
+                      "headers": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100000
+                        },
+                        "minItems": 1
+                      },
+                      "rows": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "headers",
+                      "rows"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "image"
+                      },
+                      "src": {
+                        "type": "string",
+                        "maxLength": 6000000,
+                        "pattern": "^data:image\\/(png|jpeg|webp);base64,[a-zA-Z0-9+/=]+$"
+                      },
+                      "alt": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      },
+                      "width": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 3000
+                      },
+                      "height": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 3000
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "src",
+                      "alt",
+                      "width",
+                      "height"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "derivation"
+                      },
+                      "steps": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100000
+                        },
+                        "minItems": 1
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "steps"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "interactive_model"
+                      },
+                      "model": {
+                        "type": "string",
+                        "enum": [
+                          "capm_sml",
+                          "two_assets"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type",
+                      "model"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "blank_space"
+                      },
+                      "height": {
+                        "type": "integer",
+                        "minimum": 80,
+                        "maximum": 800,
+                        "default": 160
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                  },
+                  "type": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{1,96}$"
+                  }
+                },
+                "required": [
+                  "id",
+                  "type"
+                ],
+                "additionalProperties": true,
+                "not": {
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "heading",
+                        "paragraph",
+                        "markdown",
+                        "equation",
+                        "table",
+                        "image",
+                        "callout",
+                        "derivation",
+                        "interactive_model",
+                        "question",
+                        "answer",
+                        "blank_space"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 2000
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "contentVersion",
+        "courseId",
+        "courseTitle",
+        "chapterId",
+        "chapterTitle",
+        "blocks"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

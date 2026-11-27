@@ -1,0 +1,34 @@
+{
+  "name": "axiom-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build && node scripts/offline.mjs",
+    "test": "tsx --test tests/core.test.ts",
+    "test:browser": "playwright test",
+    "schema": "tsx scripts/schema.ts"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "dexie": "^4.0.11",
+    "katex": "^0.16.22",
+    "lucide-react": "^0.468.0",
+    "react-markdown": "^10.1.0",
+    "zod": "3.25.76",
+    "zod-to-json-schema": "3.24.6"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@types/katex": "^0.16.7",
+    "@playwright/test": "^1.54.0",
+    "fake-indexeddb": "^6.0.0",
+    "tsx": "^4.20.0",
+    "@types/node": "^22.15.0"
+  }
+}
