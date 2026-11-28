@@ -1,9 +1,12 @@
 import { Camera,RotateCcw,Activity } from 'lucide-react'
 import {capm,portfolio,parameters,defaults,type Values} from './models'
-import type {Model} from './schema'
+import type {Model,ModelSetup} from './schema'
 import type {Snapshot} from './records'
-type Props={model:Model;values:Values;snapshots:Snapshot[];active?:string;change:(v:Values)=>void;save:()=>void;restore:(s:Snapshot)=>void}
-export function ModelView({model,values:v,snapshots,active,change,save,restore}:Props){
+import {FinanceExperiment} from './FinanceExperiment'
+export type ModelProps={setup?:ModelSetup;model:Model;values:Values;snapshots:Snapshot[];active?:string;change:(v:Values)=>void;save:()=>void;restore:(s:Snapshot)=>void}
+export function ModelView(props:ModelProps){
+  const {model,values:v,snapshots,active,change,save,restore}=props
+  if(model!=='capm_sml'&&model!=='two_assets')return <FinanceExperiment {...props}/>
   const sml=model==='capm_sml',w=v.weight/100, mix=portfolio(w,v.rho)
   const expected=sml?capm(v.riskFreeRate,v.marketRiskPremium,v.beta):mix.expected
   const xs=sml?[-1,0,1,2,3]:[0,5,10,15,20], xmin=xs[0],xmax=xs.at(-1)!

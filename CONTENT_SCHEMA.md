@@ -19,9 +19,23 @@
 | table | headers 字符串数组，rows 二维字符串数组 |
 | image | src 仅接受内嵌 PNG、JPEG、WebP 的 base64 data URL，alt、width、height 必填 |
 | derivation | steps，按顺序列出的文本步骤 |
-| interactive_model | model 为 capm_sml 或 two_assets，参数范围与公式由可信注册表维护 |
+| interactive_model | model 取自下方注册表。公式由阅读器实现 |
 | blank_space | height 为 80–800 个逻辑像素，默认 160 |
 
 不要改变同一概念的块 ID。修改块内容后旧版笔迹和高亮保留，引擎使用稳定序列化的 SHA-256 指纹检查绑定，列出待复核记录。未知块类型在阅读器中有降级提示并随备份原样保存。导入同时检查 Schema 难以表达的条件，例如块 ID 唯一性。单次文件上限 64 MiB。
 
 备份使用独立的 format = axiom-backup 和 version = 1，包含课程元数据、整章文档、矢量笔迹、文字高亮、参数快照、进度、设置。单课程备份使用相同格式，省略用户全局设置。
+## 交互模型与行内公式
+
+基础模型为 capm_sml 和 two_assets。下列模型还接受可选的 setup，其中 ranges 将参数名映射到 min、max、step、initial，constants 为数值常量。利率和标准差按百分数输入，相关系数与权重按小数输入。
+
+| model | 滑块 | 常量 |
+| --- | --- | --- |
+| risk_pricing | beta | rf、premium |
+| market_beta | vol、rho | marketVol |
+| two_asset_curve | rho | volA、volB、retA、retB |
+| market_allocation | weight | rf、premium、marketVol |
+| pricing_gap | beta、forecast | rf、premium |
+| discounted_project | beta、cash | rf、premium、cost |
+
+Markdown 和表格单元格里的行内公式使用 LaTeX 圆括号分隔符。在 JSON 字符串中按 JSON 规则转义反斜杠。

@@ -4,9 +4,12 @@ export const id = z.string().regex(/^[A-Za-z0-9_-]{1,96}$/, 'ID 只能使用字�
 const text = z.string().min(1).max(100000)
 const base = z.object({id})
 const simple = <T extends string>(type:T) => base.extend({type:z.literal(type),content:text})
-export const models = ['capm_sml', 'two_assets'] as const
+export const models = ['capm_sml', 'two_assets', 'risk_pricing','market_beta','two_asset_curve','market_allocation','pricing_gap','discounted_project'] as const
 export type Model = typeof models[number]
 export const blockTypes = ['heading','paragraph','markdown','equation','table','image','callout','derivation','interactive_model','question','answer','blank_space'] as const
+const range=z.object({min:z.number().finite(),max:z.number().finite(),step:z.number().positive(),initial:z.number().finite()}).refine(p=>p.min<p.max&&p.initial>=p.min&&p.initial<=p.max,'无效滑块范围')
+const setup=z.object({ranges:z.record(range),constants:z.record(z.number().finite().min(-1000000).max(1000000)).refine(c=>(c.marketVol===undefined||c.marketVol>0)&&(c.cost===undefined||c.cost>0)&&(c.volA===undefined||c.volA>=0)&&(c.volB===undefined||c.volB>=0),'标准差或投资额无效')})
+export type ModelSetup=z.infer<typeof setup>
 const known = z.discriminatedUnion('type', [
   base.extend({type:z.literal('heading'),level:z.number().int().min(2).max(4).default(2),content:text}),
   simple('paragraph'),simple('markdown'),simple('callout'),simple('question'),simple('answer'),
@@ -14,7 +17,7 @@ const known = z.discriminatedUnion('type', [
   base.extend({type:z.literal('table'),headers:z.array(text).min(1),rows:z.array(z.array(z.string()))}),
   base.extend({type:z.literal('image'),src:z.string().max(6000000).regex(/^data:image\/(png|jpeg|webp);base64,[a-zA-Z0-9+/=]+$/),alt:text,width:z.number().positive().max(3000),height:z.number().positive().max(3000)}),
   base.extend({type:z.literal('derivation'),steps:z.array(text).min(1)}),
-  base.extend({type:z.literal('interactive_model'),model:z.enum(models)}),
+  base.extend({type:z.literal('interactive_model'),model:z.enum(models),setup:setup.optional()}),
   base.extend({type:z.literal('blank_space'),height:z.number().int().min(80).max(800).default(160)})
 ])
 export type KnownBlock = z.infer<typeof known>

@@ -54,3 +54,30 @@ test('storage write failure is visible and never reported as saved',async({page:
   await p.getByRole('button',{name:'收藏章节',exact:true}).click();await expect(p.getByRole('alert')).toContainText('保存失败')
 })
 test('cached project subpath opens offline',async({page:p,context})=>{await start(p);await p.evaluate(()=>navigator.serviceWorker.ready.then(()=>true));await p.reload();await context.setOffline(true);await p.reload();await expect(p.getByTestId('result')).toHaveText('10.20%')})
+
+test('pen input draws without panning and touch can pan or write',async({page:p})=>{
+  await start(p)
+  await p.getByRole('button',{name:'手写笔',exact:true}).click()
+  const block=p.locator('.sheet-block').first(),box=(await block.boundingBox())!
+  const x=box.x+30,y=box.y+15
+  const session=await p.context().newCDPSession(p)
+  const scroll=()=>p.locator('.reading-scroll').evaluate(el=>el.scrollTop)
+  const top=await scroll()
+  await session.send('Input.dispatchMouseEvent',{type:'mousePressed',pointerType:'pen',x,y,button:'left',buttons:1,force:.5})
+  for(let i=1;i<=18;i++)await session.send('Input.dispatchMouseEvent',{type:'mouseMoved',pointerType:'pen',x:x+i*4,y:y+i*2,buttons:1,force:.65})
+  await session.send('Input.dispatchMouseEvent',{type:'mouseReleased',pointerType:'pen',x:x+72,y:y+36,button:'left'})
+  await expect(block.locator('.ink-layer path')).toHaveCount(1)
+  expect(await scroll()).toBe(top)
+  async function swipe(){
+    const b=(await block.boundingBox())!,xx=b.x+25,yy=b.y+12
+    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:xx,y:yy}]})
+    for(let i=1;i<=6;i++)await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:xx+2*i,y:yy-6*i}]})
+    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]})
+  }
+  await swipe();expect(await scroll()).toBeGreaterThan(top)
+  await expect(block.locator('.ink-layer path')).toHaveCount(1)
+  await p.getByRole('button',{name:'手指书写'}).click()
+  const before=await scroll()
+  await swipe();await expect(block.locator('.ink-layer path')).toHaveCount(2)
+  expect(await scroll()).toBe(before)
+})

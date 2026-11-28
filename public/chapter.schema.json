@@ -342,8 +342,60 @@
                         "type": "string",
                         "enum": [
                           "capm_sml",
-                          "two_assets"
+                          "two_assets",
+                          "risk_pricing",
+                          "market_beta",
+                          "two_asset_curve",
+                          "market_allocation",
+                          "pricing_gap",
+                          "discounted_project"
                         ]
+                      },
+                      "setup": {
+                        "type": "object",
+                        "properties": {
+                          "ranges": {
+                            "type": "object",
+                            "additionalProperties": {
+                              "type": "object",
+                              "properties": {
+                                "min": {
+                                  "type": "number"
+                                },
+                                "max": {
+                                  "type": "number"
+                                },
+                                "step": {
+                                  "type": "number",
+                                  "exclusiveMinimum": 0
+                                },
+                                "initial": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "min",
+                                "max",
+                                "step",
+                                "initial"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "constants": {
+                            "type": "object",
+                            "additionalProperties": {
+                              "type": "number",
+                              "minimum": -1000000,
+                              "maximum": 1000000
+                            }
+                          }
+                        },
+                        "required": [
+                          "ranges",
+                          "constants"
+                        ],
+                        "additionalProperties": false
                       }
                     },
                     "required": [

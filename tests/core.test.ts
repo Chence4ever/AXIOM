@@ -33,3 +33,17 @@ test('atomic restore, reimport, chapter isolation and full round trip',async()=>
     await assert.rejects(dst.transaction('rw',dst.annotations,async()=>{await dst.annotations.clear();throw Error('rollback')}));assert.equal(await dst.annotations.count(),1)
   }finally{await src.delete();await dst.delete()}
 })
+
+test('interactive finance models use the imported assumptions and parameter ranges',async()=>{
+  const {calculate}=await import('../src/FinanceExperiment')
+  const {controls}=await import('../src/models')
+  assert.equal(calculate('market_beta',{vol:30,rho:0.5},{marketVol:10}).metrics[0][1],1.5)
+  assert.deepEqual(calculate('market_allocation',{weight:1.2},{rf:2,premium:5,marketVol:15}).metrics.map(m=>m[1]),[8,18,1.2])
+  assert.equal(calculate('pricing_gap',{beta:1,forecast:10},{rf:2,premium:5}).metrics[1][1],3)
+  const project=calculate('discounted_project',{cash:110,beta:1},{cost:100,rf:4,premium:6})
+  assert.ok(Math.abs(project.metrics[2][1])<1e-8)
+  assert.equal(calculate('risk_pricing',{beta:-2},{rf:2,premium:5}).metrics[0][1],-8)
+  const chart=calculate('two_asset_curve',{rho:-1},{volA:12,volB:12,retA:8,retB:4}).chart!
+  assert.deepEqual(chart.points[50],[0,6])
+  assert.equal(controls('risk_pricing',{ranges:{beta:{min:-2,max:2,initial:0,step:.1}},constants:{}})[0].initial,0)
+})
